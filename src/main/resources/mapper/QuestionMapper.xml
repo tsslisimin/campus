@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.csjava.campus.question.mapper.QuestionMapper">
+
+
+    <select id="findByTemplateId" resultType="cn.csjava.campus.question.entity.QuestionEntity">
+
+        select tp.signature as `signature`, tp.id as `template_id`,tp.describes as `template_des` ,tp.start_date,tp.end_date,tp.`status`,
+        it.id as item_id,it.health as `health`,it.describes as `item_des`, it.editor_type as `editor_type`,it.`index` as item_index,
+        it.question_type,op.id as option_id,op.content as option_content,op.question_index as option_index,it.input_text
+        from `question_template` as tp left join `question_item` as it on tp.id=it.template_id
+        left join `question_item_option` as op on op.question_item_id=it.id  where tp.id=#{templateId};
+
+    </select>
+
+
+    <select id="countByTemplateId" resultType="java.lang.Long">
+
+        select count(*)
+        from `question_template` as tp left join `question_item` as it on tp.id=it.template_id
+        left join `question_item_option` as op on op.question_item_id=it.id  where tp.id=#{templateId};
+
+
+    </select>
+
+    <select id="findByStudentTemplateId" resultType="cn.csjava.campus.question.entity.QuestionEntity">
+
+      select tp.id as `template_id`, tp.describes as `template_des` ,tp.start_date,tp.end_date,
+      it.id as item_id,it.describes as `item_des`, it.editor_type as `editor_type`,it.`index` as item_index,it.question_type,
+      op.id as option_id,op.content as option_content,ans.sa_id ,ans.content as answer
+      from question_answer  as ans
+      left join question_item as it on ans.question_id=it.id
+      left join  question_item_option as op on op.id=ans.question_option_id
+      left join question_template as tp on tp.id=ans.template_id
+      where ans.sa_id=#{saId} and ans.template_id=#{templateId}
+
+
+    </select>
+
+    <!--qa.sa_id=#{studentId}  and-->
+    <select id="findAnswerByStudent" resultType="cn.csjava.campus.question.dto.AnswerExport">
+
+      select
+      sa.student_name,
+      sa.sex,
+      sa.`status`,
+      sa.`card_no`,
+      sa.family_address,
+      sa.mother_name,
+      sa.mother_phone,
+      sa.father_name,
+      sa.father_phone,
+      qa.content,
+      qi.describes,
+      stu.id as studentId,
+      qi.`id` as item_id
+
+
+      from question_answer as qa
+      left join student_apply as sa on qa.sa_id=sa.sa_id
+      left join question_item  as qi on  qa.question_id=qi.id
+      left join student stu on sa.card_no=stu.card_no
+      where  qi.health=1
+
+
+    </select>
+</mapper>
+

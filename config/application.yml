@@ -1,0 +1,56 @@
+app.version: 0.1
+logger.level: debug
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: legend
+    url: jdbc:mysql://csjava.cn:8306/campus?useUnicde=true&characterEncoding=UTF-8
+  redis:
+    database: 5
+    host: csjava.cn
+    password: 123
+    port: 6379
+#  thymeleaf:
+#    prefix: classpath:/view/
+#    suffix: .html
+  mvc:
+    view:
+      prefix: classpath:/view/
+      suffix: .html
+  http:
+    multipart:
+      max-file-size: 100MB
+logging:
+  level:
+    org.springframework.web: ${logger.level}
+    cn.csjava.campus: ${logger.level}
+    org.mybatis: ${logger.level}
+    com.mchange: ${logger.level}
+  file: ./logs/
+campus:
+  id: MnpCTfUzs38done
+  code: yjeMl3nCGzd429d2
+  key: d12cd448d67e0767d0063c4cf7a3a106
+  url: https://m.campus.qq.com/api/
+mapper:
+  mappers: cn.csjava.campus.common.base.BaseMapper
+  not-empty: true
+server:
+  port: 9081
+swagger2:
+ enable: true
+ title: title
+ des: des
+ url: csjava.cn
+
+mongodb:
+  host: localhost
+  port: 27017
+  username: admin
+  password: 123456
+  database: campus

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.csjava.campus.question.mapper.QuestionItemOptionMapper">
+    <update id="updateByPrimaryKeyBySelective"
+            parameterType="cn.csjava.campus.question.entity.QuestionItemOptionEntity">
+        update `question_item_option`
+
+        <set>
+            <if test="entity.templateId != null">`template_id`=#{entity.templateId},</if>
+            <if test="entity.questionItemId != null">`question_item_id` = #{entity.questionItemId},</if>
+            <if test="entity.questionIndex != null">`question_index` = #{entity.questionIndex},</if>
+            <if test="entity.content != null">`content` = #{entity.content}</if>
+        </set>
+        where id=#{entity.id}
+    </update>
+    <select id="selectByCondition"
+            resultType="cn.csjava.campus.question.entity.QuestionItemOptionEntity">
+
+        select * from `question_item_option` where 1=1
+        <choose>
+            <when test="templateId != null">and `template_id`=#{templateId}</when>
+            <when test="questionItemId != null">and `question_item_id`=#{questionItemId}</when>
+            <when test="questionIndex != null">and `question_index`=#{questionIndex}</when>
+            <when test="content != null">and `content`=#{content}</when>
+            <!--<otherwise>-->
+            <!--and id=#{id}-->
+            <!--</otherwise>-->
+        </choose>
+    </select>
+
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true"
+            parameterType="cn.csjava.campus.question.entity.QuestionItemOptionEntity">
+        insert into `question_item_option` ( `question_index`, `content`, `template_id`,`question_item_id`)
+        values ( #{questionIndex}, #{content},#{templateId},#{questionItemId})
+
+    </insert>
+    <select id="selectIdByItemId" resultType="cn.csjava.campus.question.entity.QuestionItemOptionEntity">
+      select  id from `question_item_option` where question_item_id=#{itemId}
+
+    </select>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatchById" parameterType="list">
+        <!-- forEach : 用来循环 collection : 用来指定循环的数据的类型 可以填的值有：array,list,map item
+            : 循环中为每个循环的数据指定一个别名 index : 循环中循环的下标 open : 开始 close : 结束 separator : 数组中元素之间的分隔符 -->
+        delete from `question_item_option` where `id` in
+        <foreach collection="list" item="id" index="no" open="("
+                 separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
+

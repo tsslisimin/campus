@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.csjava.campus.student.mapper.StudentMapper">
+
+    <update id="updateByCardNo" parameterType="cn.csjava.campus.student.entity.StudentEntity">
+        UPDATE `student`
+        <set>
+            <if test="entity.studentNumber != null  and entity.studentNumber != '' ">
+                `student_number`=#{entity.studentNumber},
+            </if>
+            <if test="entity.xxdm != null  and entity.xxdm != '' ">
+                `xxdm`=#{entity.xxdm},
+            </if>
+            <if test="entity.school != null  and entity.school != '' ">
+                `school`=#{entity.school},
+            </if>
+            <if test="entity.username != null  and entity.username != '' ">
+                `username`=#{entity.username},
+            </if>
+            <if test="entity.sex != null  and entity.sex != '' ">
+                `sex`=#{entity.sex },
+            </if>
+            <if test="entity.birthday != null ">
+                `birthday`=#{entity.birthday },
+            </if>
+            <if test="entity.usernameOld != null  and entity.usernameOld != '' ">
+                `username_old`=#{entity.usernameOld},
+            </if>
+            <if test="entity.englishName != null  and entity.englishName != '' ">
+                `english_name`=#{entity.englishName},
+            </if>
+            <if test="entity.cardNo != null  and entity.cardNo != '' ">
+                `card_no`=#{entity.cardNo},
+            </if>
+            <if test="entity.studentNative != null  and entity.studentNative != '' ">
+                `student_native`=#{entity.studentNative},
+            </if>
+            <if test="entity.nation != null  and entity.nation != '' ">
+                `nation`=#{entity.nation},
+            </if>
+            <if test="entity.politicsStudent != null  and entity.politicsStudent != '' ">
+                `politics_student`=#{entity.politicsStudent},
+            </if>
+            <if test="entity.familyAddress != null  and entity.familyAddress != '' ">
+                `family_address`=#{entity.familyAddress},
+            </if>
+            <if test="entity.registerAddress != null  and entity.registerAddress != '' ">
+                `register_address`=#{entity.registerAddress},
+            </if>
+            <if test="entity.speciality != null  and entity.speciality != '' ">
+                `speciality`=#{entity.speciality},
+            </if>
+            <if test="entity.phone != null  and entity.phone != '' ">
+                `phone`=#{entity.phone},
+            </if>
+            <if test="entity.postcode != null  and entity.postcode != '' ">
+                `postcode`=#{entity.postcode},
+            </if>
+            <if test="entity.fatherName != null  and entity.fatherName != '' ">
+                `father_name`=#{entity.fatherName},
+            </if>
+            <if test="entity.motherName != null  and entity.motherName != '' ">
+                `mother_name`=#{entity.motherName},
+            </if>
+            <if test="entity.fatherWork != null  and entity.fatherWork != '' ">
+                `father_work`=#{entity.fatherWork},
+            </if>
+            <if test="entity.motherWork != null ">
+                `mother_work`=#{entity.motherWork },
+            </if>
+            <if test="entity.fatherPhone != null  and entity.fatherPhone != '' ">
+                `father_phone`=#{entity.fatherPhone},
+            </if>
+            <if test="entity.motherPhone != null  and entity.motherPhone != '' ">
+                `mother_phone`=#{entity.motherPhone},
+            </if>
+            <if test="entity.publicVolunteer != null and entity.publicVolunteer != '' ">
+                `public_volunteer`=#{entity.publicVolunteer},
+            </if>
+            <if test="entity.remark != null and entity.remark != '' ">
+                `remark`=#{entity.remark},
+            </if>
+            <if test="entity.lqxxdm != null and entity.lqxxdm != '' ">
+                `lqxxdm`=#{entity.lqxxdm },
+            </if>
+            <if test="entity.lqxxmc != null  and entity.lqxxmc != '' ">
+                `lqxxmc`=#{entity.lqxxmc},
+            </if>
+            <if test="entity.admissions != null  and entity.admissions != '' ">
+                `admissions`=#{entity.admissions},
+            </if>
+            <if test="entity.status != null and entity.status != '' ">
+                `status` =#{entity.status},
+            </if>
+            <if test="entity.studentCode != null  and entity.studentCode != '' ">
+                `student_code`=#{entity.studentCode}
+            </if>
+        </set>
+        WHERE `card_no`=#{entity.cardNo}
+    </update>
+
+    <select id="queryByCondition" parameterType="cn.csjava.campus.student.entity.StudentEntity"
+            resultType="cn.csjava.campus.student.entity.StudentEntity">
+        select * from `student` where 1=1
+        <choose>
+
+            <when test="entity.studentCode != null ">
+                and `student_code`=#{entity.studentCode}
+            </when>
+            <when test="entity.sex != null ">
+                and `sex`=#{entity.sex}
+            </when>
+
+        </choose>
+
+    </select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.csjava.campus.student.mapper.StudentApplyMapper">
+
+    <update id="updateStudentTemplate">
+        update  `student_apply` set `template_id` =#{templateId},`update_time`=#{updateTime}
+                ,`status` =#{status}
+                ,`image` =#{image}
+        where `sa_id` = #{saId}
+    </update>
+
+    <select id="findStudentTemplate" resultType="cn.csjava.campus.user.controller.vo.UserStudentResponse">
+        select * from  student_apply where `user_id` = #{userId} and template_id > 0 ORDER BY commit_date DESC
+    </select>
+
+    <select id="findStudentDetails" resultType="cn.csjava.campus.user.controller.vo.UserStudentResponse">
+        SELECT
+        s.username,
+        s.sex,
+        s.student_number,
+        s.school,
+        s.birthday,
+        sa.update_time,
+        sa.`status`,
+        qt.`describes`,
+        qt.id as template_id,
+        sa.image,
+        sa.sa_id,
+        s.card_no,
+        qt.describes as template_name
+        FROM
+        student s
+        left JOIN student_apply sa
+        ON s.card_no = sa.card_no
+        left JOIN question_template qt
+        on sa.template_id=qt.id
+
+        where 1=1
+        <choose>
+            <when test="entity.templateName != null and entity.templateName != '' ">and
+                qt.`describes`=#{entity.templateName}
+            </when>
+            <when test="entity.cardNo != null and entity.cardNo != '' ">and s.`card_no`=#{entity.cardNo}</when>
+            <when test="entity.username != null and entity.username != '' ">and s.`username`=#{entity.username}</when>
+        </choose>
+    </select>
+
+    <update id="unsetTemplateId">
+        update   `student_apply` set template_id=null where template_id=#{id}
+
+    </update>
+    <select id="findImageById" resultType="cn.csjava.campus.student.entity.StudentApplyEntity">
+        select * from `student_apply` where sa_id=#{id}
+    </select>
+</mapper>

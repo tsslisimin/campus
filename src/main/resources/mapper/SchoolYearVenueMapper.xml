@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.csjava.campus.school.mapper.SchoolYearVenueMapper">
+    <select id="selectSchoolYearVenueJoin" resultType="cn.csjava.campus.school.controller.vo.SchoolYearVenueResponse">
+        SELECT * FROM school_year_vuene syv LEFT JOIN school_year sy ON syv.sy_id = sy.id
+        where 1=1
+        <if test="param.syvId != null and param.syvId != '' ">
+            and syv.syv_id = #{param.syvId}
+        </if>
+        <if test="param.yearName != null and param.yearName != '' ">
+            and syv.year_name = #{param.yearName}
+        </if>
+        <if test="param.venueName != null and param.venueName != '' ">
+            and syv.venue_name = #{param.venueName}
+        </if>
+    </select>
+
+    <update id="updateSchoolYearVenue">
+        UPDATE school_year_vuene SET `status`=#{status} where `syv_id` =#{id}
+    </update>
+
+
+    <select id="findYearByStatus" resultType="cn.csjava.campus.school.entity.SchoolYearVenueEntity">
+          select
+           sy.format_year as year_name,
+           syu.venue_name
+           from school_year_vuene  as syu
+           left join  school_year as sy on sy.id=syu.sy_id
+           where status=#{entity.status}
+    </select>
+
+    <update id="update">
+        UPDATE `school_year_vuene`
+        <set>
+            <if test="schoolYearVenueEntity.yearName != null">
+                `year_name`=#{schoolYearVenueEntity.yearName},
+            </if>
+            <if test="schoolYearVenueEntity.venueName != null">
+                `venue_name`=#{schoolYearVenueEntity.venueName},
+            </if>
+            <if test="schoolYearVenueEntity.startDate != null">
+                `start_date`=#{schoolYearVenueEntity.startDate},
+            </if>
+            <if test="schoolYearVenueEntity.endDate != null  ">
+                `end_date`=#{schoolYearVenueEntity.endDate},
+            </if>
+            <if test="schoolYearVenueEntity.status != null">
+                `status`=#{schoolYearVenueEntity.status},
+            </if>
+            <if test="schoolYearVenueEntity.url != null">
+                `url`=#{schoolYearVenueEntity.url},
+            </if>
+            <if test="schoolYearVenueEntity.imageUrl != null">
+                `image_url`=#{schoolYearVenueEntity.imageUrl},
+            </if>
+            <if test="schoolYearVenueEntity.content != null">
+                `content`=#{schoolYearVenueEntity.content},
+            </if>
+            <if test="schoolYearVenueEntity.remark != null">
+                `remark`=#{schoolYearVenueEntity.remark}
+            </if>
+        </set>
+        WHERE syv_id =#{schoolYearVenueEntity.syvId}
+    </update>
+</mapper>

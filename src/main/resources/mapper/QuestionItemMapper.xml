@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.csjava.campus.question.mapper.QuestionItemMapper">
+    <update id="updateByPrimaryKeyBySelective">
+        update question_item
+        <set>
+            <if test="entity.editorType != null">`editor_type`=#{entity.editorType},</if>
+            <if test="entity.status != null">`status`=#{entity.status},</if>
+            <if test="entity.describes != null">`describes`=#{entity.describes},</if>
+            <if test="entity.questionType != null">`question_type`=#{entity.questionType},</if>
+            <if test="entity.dependId != null">`depend_id`=#{entity.dependId},</if>
+            <if test="entity.questionType != null">`question_type`=#{entity.questionType},</if>
+            <if test="entity.inputText != null">`input_text`=#{entity.inputText},</if>
+            <if test="entity.templateId != null">`template_id`=#{entity.templateId}</if>
+            <if test="entity.health != null">`health`=#{entity.health}</if>
+        </set>
+        where id=#{entity.id}
+    </update>
+
+    <select id="selectByCondition"
+            resultType="cn.csjava.campus.question.entity.QuestionItemEntity">
+
+        select * from `question_item` where 1=1
+        <choose>
+            <when test="editorType != null">and `editor_type`=#{editorType}</when>
+            <when test="index != null">and `index`=#{index}</when>
+            <when test="status != null">and `status`=#{status}</when>
+            <when test="describes != null">and `describes`=#{describes}</when>
+            <when test="questionType != null">and `question_type`=#{questionType}</when>
+            <when test="dependId != null">and `depend_id`=#{dependId}</when>
+            <when test="templateId != null ">and `template_id`=#{templateId}</when>
+            <when test="id != null">and `id`=#{id}</when>
+            <!--<otherwise>-->
+            <!--and id=#{id}-->
+            <!--</otherwise>-->
+        </choose>
+    </select>
+
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true"
+            parameterType="cn.csjava.campus.question.entity.QuestionItemEntity">
+        insert into `question_item` (`depend_id`, `question_type`, `status`, `index`, `describes`, `create_date`, `editor_type`, `template_id`,`input_text`,`health`)
+        values (#{dependId}, #{questionType}, #{status}, #{index}, #{describes}, #{createDate}, #{editorType},
+                #{templateId},#{inputText},#{health})
+
+    </insert>
+
+    <select id="selectIdByTemplateId" resultType="cn.csjava.campus.question.entity.QuestionItemEntity">
+        select `id` from `question_item` where template_id=#{id}
+    </select>
+
+    <delete id="deleteBatchById" parameterType="list">
+        delete from `question_item` where `id` in
+        <foreach collection="list" item="id" index="no" open="("
+                 separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
+
